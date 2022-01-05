@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31912.275
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetAndDragons", "DotNetAndDragons\DotNetAndDragons.csproj", "{81725374-605B-4410-BD42-B4D0804DE1E2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{81725374-605B-4410-BD42-B4D0804DE1E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81725374-605B-4410-BD42-B4D0804DE1E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81725374-605B-4410-BD42-B4D0804DE1E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81725374-605B-4410-BD42-B4D0804DE1E2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {14C08EF6-6552-44BB-BC8B-200BF3421DF2}
+	EndGlobalSection
+EndGlobal
