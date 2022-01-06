@@ -45,7 +45,9 @@
   <ItemGroup>
     <Compile Include="Characters\ICharacter.cs" />
     <Compile Include="Characters\Monster.cs" />
+    <Compile Include="Characters\Player.cs" />
     <Compile Include="Equipment\IEquipment.cs" />
+    <Compile Include="Event.cs" />
     <Compile Include="Items\IItems.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProgramUI.cs" />

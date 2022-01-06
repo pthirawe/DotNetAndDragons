@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace DotNetAndDragons
 {
-    internal class Events
+    public class Event
     {
+
     }
 }
