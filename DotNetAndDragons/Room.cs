@@ -34,5 +34,22 @@ namespace DotNetAndDragons
                 Enemy = null;
             }
         }
+
+        public IItem TakeItem(string command)
+        {
+            int index = 0;
+            IItem toPickup = null;
+            foreach(IItem item in Items)
+            {
+                if(command.Contains(item.Name.ToLower()))
+                {
+                    toPickup = item;
+                    Items.RemoveAt(index);
+                    break;
+                }
+                index++;
+            }
+            return toPickup; 
+        }
     }
 }

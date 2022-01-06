@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace DotNetAndDragons
@@ -14,7 +15,7 @@ namespace DotNetAndDragons
         //Create rooms
         //1
         public static Room EntryHall = new Room("You step into the dank entry. The bright light of the outside world doesn't seem to penetrate as far as it should. The only way forward appears to be NORTH",
-            new List<IItem> { },
+            new List<IItem> { new HealthPotion() },
             new List<IEquipment> { },
             null);
             //2
@@ -93,6 +94,8 @@ namespace DotNetAndDragons
             bool alive = true;
             int combatResult;
             Room currentRoom = EntryHall;
+            Room previousRoom = null;
+            bool foundItem = false;
 
             while (alive)
             {
@@ -102,7 +105,23 @@ namespace DotNetAndDragons
                 if (currentRoom.Enemy != null)
                 {
                     combatResult = CombatEncounter(player, currentRoom);
+                    if(player.Health==0)
+                    {
+                        alive = false;
+                        continue;
+                    }
+                    else if(combatResult == 0)
+                    {
+                        Console.WriteLine("You manage to escape the way you came.");
+                        currentRoom = previousRoom;
+                        previousRoom = null;
+                    }
                 }
+
+                Console.WriteLine($"\nPlayer:");
+                Console.WriteLine($"Name: {player.Name}");
+                Console.WriteLine($"Health: {player.Health}");
+                Console.WriteLine("");
 
                 string command = Console.ReadLine().ToLower();
                 if (command.StartsWith("go "))
@@ -111,8 +130,10 @@ namespace DotNetAndDragons
                     {
                         if (command.Contains(exit))
                         {
+                            previousRoom = currentRoom;
                             currentRoom = currentRoom.Exits[exit];
                             foundExit = true;
+                            foundItem = false;
                             break;
                         }
                     }
@@ -121,17 +142,71 @@ namespace DotNetAndDragons
                         Console.WriteLine("Where to?");
                     }
                 }
-                else if (command.StartsWith("look "))
+                else if (command.StartsWith("look ") || command.StartsWith("search "))
                 {
-                    Console.WriteLine("Look at what?");
+                    if(command.Contains("around") || command.Contains("room"))
+                    {
+                        Console.WriteLine("You search the room and find...");
+                        if(currentRoom.Items.Count==0 && currentRoom.Equipment.Count==0)
+                        {
+                            Console.WriteLine("nothing...");
+                            Console.ReadKey();
+                        }
+                        else
+                        {                            
+                            foreach(IItem item in currentRoom.Items)
+                            {
+                                Console.WriteLine($"A {item.Name}");
+                            }
+                            foreach(IEquipment equipment in currentRoom.Equipment)
+                            {
+                                Console.WriteLine($"A {equipment.Name}");
+                            }
+                            foundItem = true;
+                            Console.ReadKey();
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Look at what?");
+                        Console.ReadKey();
+                    }
                 }
                 else if (command.StartsWith("get ") || command.StartsWith("grab ") || command.StartsWith("take "))
                 {
-                    Console.WriteLine("Get what?");
+                    if(!foundItem)
+                    {
+                        Console.WriteLine("Get what?");
+                        Console.ReadKey();
+                    }
+                    else
+                    {
+                        IItem newItem = currentRoom.TakeItem(command);
+                        if(newItem == null)
+                        {
+                            Console.WriteLine("Can't find that item.");
+                            Console.ReadKey();
+                        }
+                        else
+                        {
+                            player.Inventory.Add(newItem);
+                            Console.WriteLine($"Added {newItem.Name} to inventory.");
+                            Console.ReadKey(); 
+                        }
+                    }
                 }
                 else if (command.StartsWith("use "))
                 {
-                    Console.WriteLine("Use What?");
+                    if(command.Contains("item"))
+                    {
+                        ItemMenu();
+                    }
+                    else
+                    {
+                        Console.WriteLine("Use What?");
+                        Console.ReadKey();
+                    }
+
                 }
                 else
                 {
@@ -170,7 +245,9 @@ namespace DotNetAndDragons
                             return 1;
                         }
                         break;
-                    case "use item": //Awaiting Item Implementation
+                    case "use item":
+                        ItemMenu();
+                        break;
                     case "run": //Not sure how to determine if player ran
                         return 0;
                     default:
@@ -188,6 +265,54 @@ namespace DotNetAndDragons
                 Console.Clear();
             }
             return -99;
+        }
+
+        public void ItemMenu()
+        {
+            bool valid = true;
+            if(player.Inventory.Count<=0)
+            {
+                Console.WriteLine("You have no items.");
+                return;
+            }
+            do
+            {
+                Console.WriteLine($"Which item would you like to use?");
+                int index = 1;
+                int selection;
+                foreach(IItem item in player.Inventory)
+                {
+                    Console.WriteLine($"{index}. {item.Name}: {item.Description}");
+                }
+                Console.WriteLine("0. Cancel");
+                string input = Console.ReadLine();
+                valid = Int32.TryParse(input, out selection);
+                if(!valid)
+                {
+                    Console.WriteLine("Invalid selection.  Please enter a number.");
+                    Console.ReadKey();
+                }
+                if(selection == 0)
+                {
+                    return;
+                }
+                else
+                {
+                    UseItem(player.Inventory[selection - 1]);
+                }
+
+            }while(!valid);
+        }
+
+        public void UseItem(IItem item)
+        {
+            string effect = item.Use();
+            int effectSize = Int32.Parse(Regex.Match(effect, @"\d+").Value);
+            if(effect.Contains("heal"))
+            {
+                Console.WriteLine($"You healed {effectSize} HP.");
+                player.Heal(effectSize);
+            }
         }
 
         public void ConnectRooms()

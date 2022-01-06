@@ -50,6 +50,7 @@
     <Compile Include="Equipment\IEquipment.cs" />
     <Compile Include="Event.cs" />
     <Compile Include="Items\IItem.cs" />
+    <Compile Include="Items\HealthPotion.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProgramUI.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

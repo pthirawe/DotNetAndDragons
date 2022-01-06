@@ -10,6 +10,6 @@ namespace DotNetAndDragons.Items
     {
         string Name { get; }
         string Description { get; }
-        void Use();
+        string Use();
     }
 }
