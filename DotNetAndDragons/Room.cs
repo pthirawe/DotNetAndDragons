@@ -51,5 +51,22 @@ namespace DotNetAndDragons
             }
             return toPickup; 
         }
+
+        public IEquipment TakeEquipment(string command)
+        {
+            int index = 0;
+            IEquipment toPickup = null;
+            foreach (IEquipment equipment in Equipment)
+            {
+                if (command.Contains(equipment.Name.ToLower()))
+                {
+                    toPickup = equipment;
+                    Equipment.RemoveAt(index);
+                    break;
+                }
+                index++;
+            }
+            return toPickup;
+        }
     }
 }

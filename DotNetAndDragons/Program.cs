@@ -11,6 +11,7 @@ namespace DotNetAndDragons
         static void Main(string[] args)
         {
             ProgramUI ui = new ProgramUI();
+            Console.SetWindowSize(101, 30);
             ui.Run();
         }
     }

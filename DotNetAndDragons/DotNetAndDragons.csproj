@@ -48,6 +48,7 @@
     <Compile Include="Characters\Monster.cs" />
     <Compile Include="Characters\Player.cs" />
     <Compile Include="Equipment\IEquipment.cs" />
+    <Compile Include="Equipment\ShortSword.cs" />
     <Compile Include="Event.cs" />
     <Compile Include="Items\IItem.cs" />
     <Compile Include="Items\HealthPotion.cs" />

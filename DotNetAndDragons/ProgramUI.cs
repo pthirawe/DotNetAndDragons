@@ -26,7 +26,7 @@ namespace DotNetAndDragons
             //3
         public static Room GuardRoom = new Room("In the dim light from your lantern you see rusted weapons and armor adorning the walls.  Perhaps you might find something useful, but otherwise it looks like the only way out is EAST the way you came.",
                 new List<IItem> { },
-                new List<IEquipment> { },
+                new List<IEquipment> { new ShortSword() },
                 null);
             //4
         public static Room HallBend = new Room("The path turns sharply NORTH and the natural cave walls being giving way to rough hewn, but clearly artifical stonework.  The surfaces are cracked and worn.",
@@ -86,21 +86,46 @@ namespace DotNetAndDragons
             ConnectRooms();
 
             Console.Clear();
+            Console.WriteLine(" (                     )                                    (                                       ");
+            Console.WriteLine(" )\\ )           )   ( /(           )                 (      )\\ )                                    ");
+            Console.WriteLine("(()/(        ( /(   )\\())   (   ( /(      )          )\\ )  (()/(   (       )  (  (                  ");
+            Console.WriteLine(" /(_))   (   )\\()) ((_)\\   ))\\  )\\())  ( /(   (     (()/(   /(_))  )(   ( /(  )\\))(  (    (     (   ");
+            Console.WriteLine("(_))_    )\\ (_))/   _((_) /((_)(_))/   )(_))  )\\ )   ((_)) (_))_  (()\\  )(_))((_))\\  )\\   )\\ )  )\\  ");
+            Console.WriteLine(" |   \\  ((_)| |_   | \\| |(_))  | |_   ((_)_  _(_/(   _| |   |   \\  ((_)((_)_  (()(_)((_) _(_/( ((_) ");
+            Console.WriteLine(" | |) |/ _ \\|  _|  | .` |/ -_) |  _|  / _` || ' \\))/ _` |   | |) || '_|/ _` |/ _` |/ _ \\| ' \\))(_-< ");
+            Console.WriteLine(" |___/ \\___/ \\__|  |_|\\_|\\___|  \\__|  \\__,_||_||_| \\__,_|   |___/ |_|  \\__,_|\\__, |\\___/|_||_| /__/ ");
+            Console.WriteLine("                                                                             |___/                  ");
+            Console.WriteLine("".PadRight(100,'='));
+            Console.WriteLine("");
             Console.WriteLine("You stand before the gaping maw of a long dead monstrosity " +
-                "that once guarded the entrance to this den of evil.\n" +
+                "that once guarded the entrance to this den of evil." +
                 "You must venture inside and slay the ancient evil that threatens all that you know.\n" +
                 "You set forth into the depths holding only a dim lantern and a quarterstaff.");
-            Console.ReadKey();
+            WaitForKey();
+            Console.Clear();
+            Console.WriteLine("Before we go on, what was your name again?");
+            player.Name = Console.ReadLine();
+            Console.WriteLine($"Ah. Yes. {player.Name}.");
+            WaitForKey();
             bool alive = true;
             int combatResult;
             Room currentRoom = EntryHall;
             Room previousRoom = null;
             bool foundItem = false;
+            bool foundEquip = false;
 
             while (alive)
             {
                 Console.Clear();
+                Console.WriteLine($"\nPlayer");
+                Console.WriteLine("".PadRight(25,'-'));
+                Console.WriteLine($"|Name: {player.Name}".PadRight(24)+"|");
+                Console.WriteLine($"|Health: {player.Health}".PadRight(24)+"|");
+                Console.WriteLine("".PadRight(25,'-'));
+                Console.WriteLine("Commands: GO  |  LOOK  |  TAKE  |  USE");
+                Console.WriteLine("".PadRight(100, '='));
                 Console.WriteLine(currentRoom.OnEntry);
+                Console.WriteLine("".PadRight(100,'='));
                 bool foundExit = false;
                 if (currentRoom.Enemy != null)
                 {
@@ -108,6 +133,8 @@ namespace DotNetAndDragons
                     if(player.Health==0)
                     {
                         alive = false;
+                        Console.WriteLine("You fall to the creatures of the depths. Your journey ends here.");
+                        WaitForKey();
                         continue;
                     }
                     else if(combatResult == 0)
@@ -116,12 +143,13 @@ namespace DotNetAndDragons
                         currentRoom = previousRoom;
                         previousRoom = null;
                     }
+                    else if(combatResult == 1)
+                    {
+                        Console.WriteLine("With the creature defeated, you are free to venture forth.");
+                        WaitForKey();
+                        continue;
+                    }
                 }
-
-                Console.WriteLine($"\nPlayer:");
-                Console.WriteLine($"Name: {player.Name}");
-                Console.WriteLine($"Health: {player.Health}");
-                Console.WriteLine("");
 
                 string command = Console.ReadLine().ToLower();
                 if (command.StartsWith("go "))
@@ -134,6 +162,7 @@ namespace DotNetAndDragons
                             currentRoom = currentRoom.Exits[exit];
                             foundExit = true;
                             foundItem = false;
+                            foundEquip = false;
                             break;
                         }
                     }
@@ -150,48 +179,61 @@ namespace DotNetAndDragons
                         if(currentRoom.Items.Count==0 && currentRoom.Equipment.Count==0)
                         {
                             Console.WriteLine("nothing...");
-                            Console.ReadKey();
                         }
                         else
-                        {                            
-                            foreach(IItem item in currentRoom.Items)
+                        {     
+                            if(currentRoom.Items.Count>0)
                             {
-                                Console.WriteLine($"A {item.Name}");
+                                foreach(IItem item in currentRoom.Items)
+                                {
+                                    Console.WriteLine($"A {item.Name}");
+                                }
+                                foundItem = true;
                             }
-                            foreach(IEquipment equipment in currentRoom.Equipment)
+                            if(currentRoom.Equipment.Count>0)
                             {
-                                Console.WriteLine($"A {equipment.Name}");
+                                foreach(IEquipment equipment in currentRoom.Equipment)
+                                {
+                                    Console.WriteLine($"A {equipment.Name}");
+                                }
+                                foundEquip = true;
                             }
-                            foundItem = true;
-                            Console.ReadKey();
                         }
                     }
                     else
                     {
                         Console.WriteLine("Look at what?");
-                        Console.ReadKey();
                     }
                 }
                 else if (command.StartsWith("get ") || command.StartsWith("grab ") || command.StartsWith("take "))
                 {
-                    if(!foundItem)
+                    if(!foundItem&&!foundEquip)
                     {
                         Console.WriteLine("Get what?");
-                        Console.ReadKey();
                     }
                     else
                     {
-                        IItem newItem = currentRoom.TakeItem(command);
-                        if(newItem == null)
+                        IItem newItem;
+                        IEquipment newEquip;
+                        foreach(IItem item in currentRoom.Items)
                         {
-                            Console.WriteLine("Can't find that item.");
-                            Console.ReadKey();
+                            if (command.Contains(item.Name.ToLower()))
+                            {
+                                newItem = currentRoom.TakeItem(command);
+                                player.Inventory.Add(newItem);
+                                Console.WriteLine($"Added {newItem.Name} to inventory.");
+                                break;
+                            }
                         }
-                        else
+                        foreach(IEquipment equip in currentRoom.Equipment)
                         {
-                            player.Inventory.Add(newItem);
-                            Console.WriteLine($"Added {newItem.Name} to inventory.");
-                            Console.ReadKey(); 
+                            if (command.Contains(equip.Name.ToLower()))
+                            {
+                                newEquip = currentRoom.TakeEquipment(command);
+                                player.Equipment.Add(newEquip);
+                                Console.WriteLine($"Added {newEquip.Name} to inventory.");
+                                break;
+                            }
                         }
                     }
                 }
@@ -204,28 +246,41 @@ namespace DotNetAndDragons
                     else
                     {
                         Console.WriteLine("Use What?");
-                        Console.ReadKey();
                     }
 
+                }
+                else if (command.StartsWith("quit"))
+                {
+                    Console.WriteLine("Your journey ends here.  Perhaps you will begin again later.");
+                    WaitForKey();
+                    return;
                 }
                 else
                 {
                     Console.WriteLine("I don't understand.");
                 }
+                WaitForKey();
             }
         }
         public int CombatEncounter(Player player, Room currentRoom)
         {
             bool inCombat = true;
             string action;
-            Console.WriteLine("");
+            Console.Clear();
             Console.WriteLine($"Monsters! You must defend yourself from the {currentRoom.Enemy.Name}.");
 
             while(inCombat)
             {
+                Console.WriteLine($"\nPlayer".PadRight(25)+"".PadRight(10)+"Enemy");
+                Console.WriteLine("".PadRight(25, '-')+"".PadRight(9)+"".PadRight(25,'-'));
+                Console.WriteLine($"|Name: {player.Name}".PadRight(24) + "|".PadRight(10)+$"|Name: {currentRoom.Enemy.Name}".PadRight(24)+"|");
+                Console.WriteLine($"|Health: {player.Health}".PadRight(24) + "|".PadRight(10)+$"|Health: {currentRoom.Enemy.Health}".PadRight(24)+"|");
+                Console.WriteLine("".PadRight(25, '-')+"".PadRight(9)+"".PadRight(25,'-'));
+                /*
                 Console.WriteLine($"Player:".PadRight(30)+$"Enemy:");
                 Console.WriteLine($"Name: {player.Name}".PadRight(30)+$"Name: {currentRoom.Enemy.Name}");
                 Console.WriteLine($"Health: {player.Health}".PadRight(30)+$"Health: {currentRoom.Enemy.Health}");
+                */
                 Console.WriteLine("");
                 Console.WriteLine("What do you do?\n" +
                     "Attack\n" +
@@ -261,7 +316,7 @@ namespace DotNetAndDragons
                 {
                     return -1;
                 }
-                Console.ReadKey();
+                WaitForKey();
                 Console.Clear();
             }
             return -99;
@@ -273,6 +328,7 @@ namespace DotNetAndDragons
             if(player.Inventory.Count<=0)
             {
                 Console.WriteLine("You have no items.");
+                WaitForKey();
                 return;
             }
             do
@@ -290,7 +346,7 @@ namespace DotNetAndDragons
                 if(!valid)
                 {
                     Console.WriteLine("Invalid selection.  Please enter a number.");
-                    Console.ReadKey();
+                    WaitForKey();
                 }
                 if(selection == 0)
                 {
@@ -313,6 +369,12 @@ namespace DotNetAndDragons
                 Console.WriteLine($"You healed {effectSize} HP.");
                 player.Heal(effectSize);
             }
+        }
+
+        private void WaitForKey()
+        {
+            Console.WriteLine("\nPress Any Key to Continue.");
+            Console.ReadKey();
         }
 
         public void ConnectRooms()

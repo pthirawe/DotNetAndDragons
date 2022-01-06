@@ -28,12 +28,22 @@ namespace DotNetAndDragons.Characters
 
         public void TakeDamage(int damage)
         {
-            Health -= damage;
+            int mitigation=0;
+            foreach(IEquipment equipped in Equipment)
+            {
+                mitigation += equipped.ArmorBonus;
+            }
+            Health -= damage-mitigation;
         }
 
         public int Attack()
         {
-            return BaseAttack;
+            int bonus = 0;
+            foreach(IEquipment equipped in Equipment)
+            {
+                bonus += equipped.AttackBonus;
+            }
+            return BaseAttack+bonus;
         }
     }
 }
