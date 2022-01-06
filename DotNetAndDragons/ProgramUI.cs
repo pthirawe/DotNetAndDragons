@@ -139,6 +139,46 @@ namespace DotNetAndDragons
                 { "north", FirstT },
                 { "west", FirstFork }
             };
+            FirstT.Exits = new Dictionary<string, Room>
+            {
+                { "north", SecondT },
+                { "east", BloodyHall },
+                { "south", HallBend  }
+            };
+            BloodyHall.Exits = new Dictionary<string, Room>
+            {
+                { "west", FirstT },
+                { "east", TortureRoom }
+            };
+            SecondT.Exits = new Dictionary<string, Room>
+            {
+                { "west", DankHall },
+                { "east", CrumblingHall },
+                { "south", FirstT }
+            };
+            DankHall.Exits = new Dictionary<string, Room>
+            {
+                { "south", DungeonRoom },
+                { "east", SecondT }
+            };
+            DungeonRoom.Exits = new Dictionary<string, Room>
+            {
+                { "north", DankHall }
+            };
+            CrumblingHall.Exits = new Dictionary<string, Room>
+            {
+                { "west", SecondT },
+                { "east", Antechamber }
+            };
+            Antechamber.Exits = new Dictionary<string, Room>
+            {
+                { "north", TheHorde },
+                { "west", CrumblingHall }
+            };
+            TheHorde.Exits = new Dictionary<string, Room>
+            {
+                { "south", Antechamber }
+            };
         }
     }
 }
