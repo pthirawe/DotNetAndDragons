@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DotNetAndDragons.Items
 {
-    public interface IItems
+    public interface IItem
     {
         string Name { get; }
         string Description { get; }

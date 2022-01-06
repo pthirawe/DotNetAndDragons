@@ -11,9 +11,12 @@ namespace DotNetAndDragons.Characters
     public interface ICharacter
     {
         string Name { get; }
-        int Health { get; }
-        List<IItems> Inventory { get; }
+        int Health { get; set; }
+        int BaseAttack { get; }
+        List<IItem> Inventory { get; }
         List<IEquipment> Equipment { get; }
-
+        void TakeDamage(int damage);
+        void Heal(int healing);
+        int Attack();
     }
 }

@@ -14,8 +14,26 @@ namespace DotNetAndDragons.Characters
 
         public int Health { get; set; } = 25;
 
-        public List<IItems> Inventory { get; set; } = new List<IItems>();
+        public List<IItem> Inventory { get; set; } = new List<IItem>();
 
         public List<IEquipment> Equipment { get; set; } = new List<IEquipment>();
+
+        public int BaseAttack { get; set; } = 1;
+
+
+        public void Heal(int healing)
+        {
+            Health += healing;
+        }
+
+        public void TakeDamage(int damage)
+        {
+            Health -= damage;
+        }
+
+        public int Attack()
+        {
+            return BaseAttack;
+        }
     }
 }

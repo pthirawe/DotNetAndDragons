@@ -1,4 +1,5 @@
-﻿using DotNetAndDragons.Equipment;
+﻿using DotNetAndDragons.Characters;
+using DotNetAndDragons.Equipment;
 using DotNetAndDragons.Items;
 using System;
 using System.Collections.Generic;
@@ -13,56 +14,71 @@ namespace DotNetAndDragons
         //Create rooms
         //1
         public static Room EntryHall = new Room("You step into the dank entry. The bright light of the outside world doesn't seem to penetrate as far as it should. The only way forward appears to be NORTH",
-            new List<IItems> { },
-            new List<IEquipment> { });
+            new List<IItem> { },
+            new List<IEquipment> { },
+            null);
             //2
         public static Room FirstFork = new Room("The outside light fades rapidly as you continue your trek deeper into the lair.  You see there is a way WEST and a path to the EAST.",
-                new List<IItems> { },
-                new List<IEquipment> { });
+                new List<IItem> { },
+                new List<IEquipment> { },
+                new GiantRat());
             //3
         public static Room GuardRoom = new Room("In the dim light from your lantern you see rusted weapons and armor adorning the walls.  Perhaps you might find something useful, but otherwise it looks like the only way out is EAST the way you came.",
-                new List<IItems> { },
-                new List<IEquipment> { });
+                new List<IItem> { },
+                new List<IEquipment> { },
+                null);
             //4
         public static Room HallBend = new Room("The path turns sharply NORTH and the natural cave walls being giving way to rough hewn, but clearly artifical stonework.  The surfaces are cracked and worn.",
-                new List<IItems> { },
-                new List<IEquipment> { });    
+                new List<IItem> { },
+                new List<IEquipment> { },
+                null);    
             //5
         public static Room FirstT = new Room("The path splits.  To the NORTH, you hear faint low rumbling.  To the EAST, a faint metallic smell.",
-                new List<IItems> { },
-                new List<IEquipment> { });    
+                new List<IItem> { },
+                new List<IEquipment> { },
+                null);    
             //6
         public static Room BloodyHall = new Room("The metallic stench grows stronger and parts of the floor appears to have red streaks.  To the WEST, lies the intersection.  To the EAST, the stench seems to grow stronger.",
-                new List<IItems> { },
-                new List<IEquipment> { });  
+                new List<IItem> { },
+                new List<IEquipment> { },
+                null);  
             //7
         public static Room TortureRoom = new Room("As you approach the chamber the stench becomes overpowering.  The source is apparent.  Pools of blood, rotting corpses, decaying body parts.  There doesn't appear to be any way forward through here. You must turn back WEST.",
-                new List<IItems> { },
-                new List<IEquipment> { });
+                new List<IItem> { },
+                new List<IEquipment> { },
+                null);
             //8
         public static Room SecondT = new Room("Yet another intersection.  The low rumbling seems to be coming from the EAST.  The WEST seems dead silent. SOUTH takes you back towards the entrance.",
-                new List<IItems> { },
-                new List<IEquipment> { });    
+                new List<IItem> { },
+                new List<IEquipment> { },
+                null);    
             //9
         public static Room DankHall = new Room("As you pass, you feel the air grow colder and hear a faint dripping noise further down to the SOUTH. EAST leads back to the intersection.",
-                new List<IItems> { },
-                new List<IEquipment> { });   
+                new List<IItem> { },
+                new List<IEquipment> { },
+                null);   
             //10
         public static Room DungeonRoom = new Room("Chains hanging from the wall restraining emaciated corpses make the purpose of this room clear. The only way out is NORTH the way you came.",
-                new List<IItems> { },
-                new List<IEquipment> { });        
+                new List<IItem> { },
+                new List<IEquipment> { },
+                null);        
             //11
         public static Room CrumblingHall = new Room("Parts of the stonework here has crumbled, others bulged out as though something too large has pushed it's way through.  The destruction seems to lead to the EAST.  To the WEST lies the last intersection.",
-                new List<IItems> { },
-                new List<IEquipment> { });    
+                new List<IItem> { },
+                new List<IEquipment> { },
+                null);    
             //12
         public static Room Antechamber = new Room("The destruction continues here with crushed furniture and the doorways reduced to rubble.  The low rumble now sounds like the snoring of an incredibly immense creature and is coming from a small gap in the NORTH.  The way back lies to the WEST.",
-                new List<IItems> { },
-                new List<IEquipment> { });   
+                new List<IItem> { },
+                new List<IEquipment> { },
+                null);   
             //13
-        public static Room TheHorde = new Room("Through the gap the chamber opens into a cavernous space the top of which is lost in darkness.  A soft glitter emanates from mountains of gold, silver, and gems of all kinds.  Anything of value for miles around seems to have been gathered here. ",
-                new List<IItems> { },
-                new List<IEquipment> { });
+        public static Room TheHorde = new Room("Through the gap the chamber opens into a cavernous space the top of which is lost in darkness.  A soft glitter emanates from mountains of gold, silver, and gems of all kinds.  Anything of value for miles around seems to have been gathered here.  The only way out seems to be to the SOUTH.",
+                new List<IItem> { },
+                new List<IEquipment> { },
+                null);
+        // Create a static player
+        public static Player player = new Player();
 
         public void Run()
         {
@@ -75,6 +91,7 @@ namespace DotNetAndDragons
                 "You set forth into the depths holding only a dim lantern and a quarterstaff.");
             Console.ReadKey();
             bool alive = true;
+            int combatResult;
             Room currentRoom = EntryHall;
 
             while (alive)
@@ -82,20 +99,24 @@ namespace DotNetAndDragons
                 Console.Clear();
                 Console.WriteLine(currentRoom.OnEntry);
                 bool foundExit = false;
+                if (currentRoom.Enemy != null)
+                {
+                    combatResult = CombatEncounter(player, currentRoom);
+                }
 
                 string command = Console.ReadLine().ToLower();
                 if (command.StartsWith("go "))
                 {
-                    foreach(string exit in currentRoom.Exits.Keys)
+                    foreach (string exit in currentRoom.Exits.Keys)
                     {
-                        if(command.Contains(exit))
+                        if (command.Contains(exit))
                         {
                             currentRoom = currentRoom.Exits[exit];
                             foundExit = true;
                             break;
                         }
                     }
-                    if(!foundExit)
+                    if (!foundExit)
                     {
                         Console.WriteLine("Where to?");
                     }
@@ -118,6 +139,57 @@ namespace DotNetAndDragons
                 }
             }
         }
+        public int CombatEncounter(Player player, Room currentRoom)
+        {
+            bool inCombat = true;
+            string action;
+            Console.WriteLine("");
+            Console.WriteLine($"Monsters! You must defend yourself from the {currentRoom.Enemy.Name}.");
+
+            while(inCombat)
+            {
+                Console.WriteLine($"Player:".PadRight(30)+$"Enemy:");
+                Console.WriteLine($"Name: {player.Name}".PadRight(30)+$"Name: {currentRoom.Enemy.Name}");
+                Console.WriteLine($"Health: {player.Health}".PadRight(30)+$"Health: {currentRoom.Enemy.Health}");
+                Console.WriteLine("");
+                Console.WriteLine("What do you do?\n" +
+                    "Attack\n" +
+                    "Use Item\n" +
+                    "Run");
+                action = Console.ReadLine().ToLower();
+                Console.WriteLine("");
+                switch (action)
+                {
+                    case "attack"://For now, attacks all monsters
+                        Console.WriteLine($"You attack dealing {player.Attack()} damage.");
+                        currentRoom.Enemy.TakeDamage(player.Attack());
+                        if(currentRoom.Enemy.Health<=0)
+                        {
+                            Console.WriteLine($"{currentRoom.Enemy.Name} was vanquished!");
+                            currentRoom.RemoveMonster(currentRoom.Enemy);
+                            return 1;
+                        }
+                        break;
+                    case "use item": //Awaiting Item Implementation
+                    case "run": //Not sure how to determine if player ran
+                        return 0;
+                    default:
+                        Console.WriteLine("I don't know what you mean.");
+                        break;
+                }
+
+                Console.WriteLine($"{currentRoom.Enemy.Name} attacks!  It deals {currentRoom.Enemy.Attack()} damage.");
+                player.TakeDamage(currentRoom.Enemy.Attack());
+                if(player.Health<=0)
+                {
+                    return -1;
+                }
+                Console.ReadKey();
+                Console.Clear();
+            }
+            return -99;
+        }
+
         public void ConnectRooms()
         {
             EntryHall.Exits = new Dictionary<string, Room>
