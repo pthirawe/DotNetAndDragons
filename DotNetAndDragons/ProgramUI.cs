@@ -32,35 +32,35 @@ namespace DotNetAndDragons
                 new List<IItems> { },
                 new List<IEquipment> { });    
             //6
-        public static Room BloodyHall = new Room("The metallic stench grows stronger and parts of the floor appears to have red streaks.",
+        public static Room BloodyHall = new Room("The metallic stench grows stronger and parts of the floor appears to have red streaks.  To the WEST, lies the intersection.  To the EAST, the stench seems to grow stronger.",
                 new List<IItems> { },
                 new List<IEquipment> { });  
             //7
-        public static Room TortureRoom = new Room("In the dim light from your lantern you see rusted weapons and armor adorning the walls.",
+        public static Room TortureRoom = new Room("As you approach the chamber the stench becomes overpowering.  The source is apparent.  Pools of blood, rotting corpses, decaying body parts.  There doesn't appear to be any way forward through here. You must turn back WEST.",
                 new List<IItems> { },
                 new List<IEquipment> { });
             //8
-        public static Room SecondT = new Room("In the dim light from your lantern you see rusted weapons and armor adorning the walls.",
+        public static Room SecondT = new Room("Yet another intersection.  The low rumbling seems to be coming from the EAST.  The WEST seems dead silent. SOUTH takes you back towards the entrance.",
                 new List<IItems> { },
                 new List<IEquipment> { });    
             //9
-        public static Room DankHall = new Room("In the dim light from your lantern you see rusted weapons and armor adorning the walls.",
+        public static Room DankHall = new Room("As you pass, you feel the air grow colder and hear a faint dripping noise further down to the SOUTH. EAST leads back to the intersection.",
                 new List<IItems> { },
                 new List<IEquipment> { });   
             //10
-        public static Room DungeonRoom = new Room("In the dim light from your lantern you see rusted weapons and armor adorning the walls.",
+        public static Room DungeonRoom = new Room("Chains hanging from the wall restraining emaciated corpses make the purpose of this room clear. The only way out is NORTH the way you came.",
                 new List<IItems> { },
                 new List<IEquipment> { });        
             //11
-        public static Room CrumblingHall = new Room("In the dim light from your lantern you see rusted weapons and armor adorning the walls.",
+        public static Room CrumblingHall = new Room("Parts of the stonework here has crumbled, others bulged out as though something too large has pushed it's way through.  The destruction seems to lead to the EAST.  To the WEST lies the last intersection.",
                 new List<IItems> { },
                 new List<IEquipment> { });    
             //12
-        public static Room Antechamber = new Room("In the dim light from your lantern you see rusted weapons and armor adorning the walls.",
+        public static Room Antechamber = new Room("The destruction continues here with crushed furniture and the doorways reduced to rubble.  The low rumble now sounds like the snoring of an incredibly immense creature and is coming from a small gap in the NORTH.  The way back lies to the WEST.",
                 new List<IItems> { },
                 new List<IEquipment> { });   
             //13
-        public static Room TheHorde = new Room("In the dim light from your lantern you see rusted weapons and armor adorning the walls.",
+        public static Room TheHorde = new Room("Through the gap the chamber opens into a cavernous space the top of which is lost in darkness.  A soft glitter emanates from mountains of gold, silver, and gems of all kinds.  Anything of value for miles around seems to have been gathered here. ",
                 new List<IItems> { },
                 new List<IEquipment> { });
 
