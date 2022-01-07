@@ -369,6 +369,7 @@ namespace DotNetAndDragons
                 foreach(IItem item in player.Inventory)
                 {
                     Console.WriteLine($"{index}. {item.Name}: {item.Description}");
+                    index++;
                 }
                 Console.WriteLine("0. Cancel");
                 string input = Console.ReadLine();
@@ -439,6 +440,10 @@ namespace DotNetAndDragons
             {
                 { "west", FirstT },
                 { "east", TortureRoom }
+            };
+            TortureRoom.Exits = new Dictionary<string, Room>
+            {
+                { "west", BloodyHall }
             };
             SecondT.Exits = new Dictionary<string, Room>
             {
