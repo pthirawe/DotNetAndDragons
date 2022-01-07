@@ -1,8 +1,0 @@
-C:\Users\patom\Documents\ElevenFiftyProjects\DotNetProjects\DotNetAndDragons\DotNetAndDragons\bin\Debug\DotNetAndDragons.exe.config
-C:\Users\patom\Documents\ElevenFiftyProjects\DotNetProjects\DotNetAndDragons\DotNetAndDragons\bin\Debug\DotNetAndDragons.exe
-C:\Users\patom\Documents\ElevenFiftyProjects\DotNetProjects\DotNetAndDragons\DotNetAndDragons\bin\Debug\DotNetAndDragons.pdb
-C:\Users\patom\Documents\ElevenFiftyProjects\DotNetProjects\DotNetAndDragons\DotNetAndDragons\obj\Debug\DotNetAndDragons.csproj.AssemblyReference.cache
-C:\Users\patom\Documents\ElevenFiftyProjects\DotNetProjects\DotNetAndDragons\DotNetAndDragons\obj\Debug\DotNetAndDragons.csproj.SuggestedBindingRedirects.cache
-C:\Users\patom\Documents\ElevenFiftyProjects\DotNetProjects\DotNetAndDragons\DotNetAndDragons\obj\Debug\DotNetAndDragons.csproj.CoreCompileInputs.cache
-C:\Users\patom\Documents\ElevenFiftyProjects\DotNetProjects\DotNetAndDragons\DotNetAndDragons\obj\Debug\DotNetAndDragons.exe
-C:\Users\patom\Documents\ElevenFiftyProjects\DotNetProjects\DotNetAndDragons\DotNetAndDragons\obj\Debug\DotNetAndDragons.pdb

@@ -13,6 +13,8 @@ namespace DotNetAndDragons
     public class ProgramUI
     {     
         //Create rooms
+        //Populate rooms with items/equipment by adding to appropriate lists
+        //Rooms only support 1 monster.  Replace NULL with a "new Monster".
         //1
         public static Room EntryHall = new Room("You step into the dank entry. The bright light of the outside world doesn't seem to penetrate as far as it should. The only way forward appears to be NORTH",
             new List<IItem> { new HealthPotion() },
@@ -25,7 +27,7 @@ namespace DotNetAndDragons
                 new GiantRat());
             //3
         public static Room GuardRoom = new Room("In the dim light from your lantern you see rusted weapons and armor adorning the walls.  Perhaps you might find something useful, but otherwise it looks like the only way out is EAST the way you came.",
-                new List<IItem> { },
+                new List<IItem> { new HealthPotion() },
                 new List<IEquipment> { new ShortSword() },
                 null);
             //4
@@ -40,19 +42,19 @@ namespace DotNetAndDragons
                 null);    
             //6
         public static Room BloodyHall = new Room("The metallic stench grows stronger and parts of the floor appears to have red streaks.  To the WEST, lies the intersection.  To the EAST, the stench seems to grow stronger.",
-                new List<IItem> { },
-                new List<IEquipment> { },
-                null);  
-            //7
-        public static Room TortureRoom = new Room("As you approach the chamber the stench becomes overpowering.  The source is apparent.  Pools of blood, rotting corpses, decaying body parts.  There doesn't appear to be any way forward through here. You must turn back WEST.",
-                new List<IItem> { },
+                new List<IItem> { new HealthPotion() },
                 new List<IEquipment> { },
                 null);
+        //7
+        public static Room TortureRoom = new Room("As you approach the chamber the stench becomes overpowering.  The source is apparent.  Pools of blood, rotting corpses, decaying body parts.  There doesn't appear to be any way forward through here. You must turn back WEST.",
+                new List<IItem> { },
+                new List<IEquipment> { new Helm() },
+                new CoagulatedMass());
             //8
         public static Room SecondT = new Room("Yet another intersection.  The low rumbling seems to be coming from the EAST.  The WEST seems dead silent. SOUTH takes you back towards the entrance.",
-                new List<IItem> { },
+                new List<IItem> { new HealthPotion() },
                 new List<IEquipment> { },
-                null);    
+                new Troll());    
             //9
         public static Room DankHall = new Room("As you pass, you feel the air grow colder and hear a faint dripping noise further down to the SOUTH. EAST leads back to the intersection.",
                 new List<IItem> { },
@@ -61,23 +63,23 @@ namespace DotNetAndDragons
             //10
         public static Room DungeonRoom = new Room("Chains hanging from the wall restraining emaciated corpses make the purpose of this room clear. The only way out is NORTH the way you came.",
                 new List<IItem> { },
-                new List<IEquipment> { },
-                null);        
+                new List<IEquipment> { new Shield() },
+                new VengefulGhoul());        
             //11
         public static Room CrumblingHall = new Room("Parts of the stonework here has crumbled, others bulged out as though something too large has pushed it's way through.  The destruction seems to lead to the EAST.  To the WEST lies the last intersection.",
-                new List<IItem> { },
+                new List<IItem> { new HealthPotion() },
                 new List<IEquipment> { },
                 null);    
             //12
         public static Room Antechamber = new Room("The destruction continues here with crushed furniture and the doorways reduced to rubble.  The low rumble now sounds like the snoring of an incredibly immense creature and is coming from a small gap in the NORTH.  The way back lies to the WEST.",
-                new List<IItem> { },
-                new List<IEquipment> { },
+                new List<IItem> { new HealthPotion() },
+                new List<IEquipment> { new PlateArmor() },
                 null);   
             //13
         public static Room TheHorde = new Room("Through the gap the chamber opens into a cavernous space the top of which is lost in darkness.  A soft glitter emanates from mountains of gold, silver, and gems of all kinds.  Anything of value for miles around seems to have been gathered here.  The only way out seems to be to the SOUTH.",
                 new List<IItem> { },
                 new List<IEquipment> { },
-                null);
+                new Dragon());
         // Create a static player
         public static Player player = new Player();
 
@@ -103,7 +105,7 @@ namespace DotNetAndDragons
                 "You set forth into the depths holding only a dim lantern and a quarterstaff.");
             WaitForKey();
             Console.Clear();
-            Console.WriteLine("Before we go on, what was your name again?");
+            Console.WriteLine("What is your name adventurer?");
             player.Name = Console.ReadLine();
             Console.WriteLine($"Ah. Yes. {player.Name}.");
             WaitForKey();
@@ -118,11 +120,33 @@ namespace DotNetAndDragons
             {
                 Console.Clear();
                 Console.WriteLine($"\nPlayer");
-                Console.WriteLine("".PadRight(25,'-'));
-                Console.WriteLine($"|Name: {player.Name}".PadRight(24)+"|");
-                Console.WriteLine($"|Health: {player.Health}".PadRight(24)+"|");
-                Console.WriteLine("".PadRight(25,'-'));
-                Console.WriteLine("Commands: GO  |  LOOK  |  TAKE  |  USE");
+                Console.WriteLine("".PadRight(100,'-'));
+                Console.WriteLine($"|Name: {player.Name}".PadRight(99)+"|");
+                Console.WriteLine($"|Health: {player.Health}".PadRight(99)+"|");
+                Console.Write($"|Equipment: ");
+                player.Equipment.ForEach(i => Console.Write($"{i.Name}|"));
+                Console.SetCursorPosition(99, 5);
+                Console.WriteLine("|");
+                Console.Write($"|Inventory: ");
+                player.Inventory.ForEach(i => Console.Write($"{i.Name}|"));
+                Console.SetCursorPosition(99, 6);
+                Console.WriteLine("|");
+                //Console.WriteLine("");
+                Console.WriteLine("".PadRight(100,'-'));
+                Console.Write("Commands: GO  |  LOOK  |  TAKE  |  USE");
+                if(foundItem)
+                {
+                    Console.Write("        On the ground: ");
+                    foreach(IItem item in currentRoom.Items)
+                    {
+                        Console.Write(item.Name+" | ");
+                    }
+                    foreach(IEquipment equipment in currentRoom.Equipment)
+                    {
+                        Console.Write(equipment.Name + " | ");
+                    }
+                }
+                Console.WriteLine("");
                 Console.WriteLine("".PadRight(100, '='));
                 Console.WriteLine(currentRoom.OnEntry);
                 Console.WriteLine("".PadRight(100,'='));
@@ -149,6 +173,12 @@ namespace DotNetAndDragons
                         WaitForKey();
                         continue;
                     }
+                }
+                if(TheHorde.Enemy == null)
+                {
+                    Console.WriteLine("With the Dragon defeated and its horde yours for the taking your journey is at an end.  How will you ever take all of this away?");
+                    WaitForKey();
+                    return;
                 }
 
                 string command = Console.ReadLine().ToLower();
@@ -369,6 +399,7 @@ namespace DotNetAndDragons
                 Console.WriteLine($"You healed {effectSize} HP.");
                 player.Heal(effectSize);
             }
+            player.Inventory.Remove(item);
         }
 
         private void WaitForKey()

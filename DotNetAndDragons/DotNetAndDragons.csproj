@@ -43,11 +43,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Characters\CoagulatedMass.cs" />
+    <Compile Include="Characters\CrazedGnoll.cs" />
+    <Compile Include="Characters\Dragon.cs" />
     <Compile Include="Characters\GiantRat.cs" />
     <Compile Include="Characters\ICharacter.cs" />
     <Compile Include="Characters\Monster.cs" />
     <Compile Include="Characters\Player.cs" />
+    <Compile Include="Characters\Troll.cs" />
+    <Compile Include="Characters\VengefulGhoul.cs" />
+    <Compile Include="Equipment\PlateArmor.cs" />
+    <Compile Include="Equipment\Helm.cs" />
     <Compile Include="Equipment\IEquipment.cs" />
+    <Compile Include="Equipment\Shield.cs" />
     <Compile Include="Equipment\ShortSword.cs" />
     <Compile Include="Event.cs" />
     <Compile Include="Items\IItem.cs" />
