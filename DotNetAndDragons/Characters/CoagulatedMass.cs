@@ -14,7 +14,7 @@ namespace DotNetAndDragons.Characters
         public override int Health { get; set; } = 20;
         public override List<IItem> Inventory { get; } = new List<IItem>() { };
         public override List<IEquipment> Equipment { get; } = new List<IEquipment>();
-        public override int BaseAttack { get; } = 8;
+        public override int BaseAttack { get; } = 5;
 
         public override int Attack()
         {

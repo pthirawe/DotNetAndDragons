@@ -57,7 +57,7 @@ namespace DotNetAndDragons
                 new Troll());    
             //9
         public static Room DankHall = new Room("As you pass, you feel the air grow colder and hear a faint dripping noise further down to the SOUTH. EAST leads back to the intersection.",
-                new List<IItem> { },
+                new List<IItem> { new HealthPotion() },
                 new List<IEquipment> { },
                 null);   
             //10
@@ -134,7 +134,7 @@ namespace DotNetAndDragons
                 //Console.WriteLine("");
                 Console.WriteLine("".PadRight(100,'-'));
                 Console.Write("Commands: GO  |  LOOK  |  TAKE  |  USE");
-                if(foundItem)
+                if(foundItem||foundEquip)
                 {
                     Console.Write("        On the ground: ");
                     foreach(IItem item in currentRoom.Items)
@@ -154,12 +154,12 @@ namespace DotNetAndDragons
                 if (currentRoom.Enemy != null)
                 {
                     combatResult = CombatEncounter(player, currentRoom);
-                    if(player.Health==0)
+                    if(combatResult==-1)
                     {
                         alive = false;
                         Console.WriteLine("You fall to the creatures of the depths. Your journey ends here.");
                         WaitForKey();
-                        continue;
+                        return;
                     }
                     else if(combatResult == 0)
                     {

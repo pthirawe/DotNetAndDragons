@@ -12,7 +12,7 @@ namespace DotNetAndDragons.Characters
     {
         public string Name { get; set; } = "John";
 
-        public int Health { get; set; } = 25;
+        public int Health { get; set; } = 30;
 
         public List<IItem> Inventory { get; set; } = new List<IItem>();
 

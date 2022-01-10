@@ -14,7 +14,7 @@ namespace DotNetAndDragons.Items
 
         public string Use()
         {
-            return "heal 5";
+            return "heal 10";
         }
     }
 }
